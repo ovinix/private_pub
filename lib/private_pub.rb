@@ -41,8 +41,14 @@ module PrivatePub
       http.use_ssl = url.scheme == "https"
       # if http.use_ssl == true
         # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        Rails.logger.info "private_pub url: " + url.to_yaml
-        Rails.logger.info "private_pub http: " + http.to_yaml
+      Rails.logger.info "private_pub url: " + url.to_yaml
+      Rails.logger.info "private_pub http: " + http.to_yaml
+      cert = File.read("/etc/apache2/ssl/server.crt")
+      key = File.read("/etc/apache2/ssl/server.key")
+
+      http.cert = OpenSSL::X509::Certificate.new(cert)
+      http.key = OpenSSL::PKey::RSA.new(key)
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       # end
       http.start {|h| h.request(form)}
       Rails.logger.info "private_pub http.start: " + http.to_yaml
