@@ -42,7 +42,7 @@ module PrivatePub
 
       Rails.logger.info "private_pub url: " + url.to_yaml
       Rails.logger.info "private_pub http: " + http.to_yaml
-      if http.use_ssl? and config[:cert_path]? and config[:key_path]?
+      if http.use_ssl? and config[:cert_path].present? and config[:key_path].present?
         # cert = File.read("/etc/apache2/ssl/server.crt")
         # key = File.read("/etc/apache2/ssl/server.key")
         cert = File.read(config[:cert_path])
