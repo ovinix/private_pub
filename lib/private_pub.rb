@@ -40,12 +40,12 @@ module PrivatePub
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = url.scheme == "https"
       # if http.use_ssl == true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        Rails.logger.info "private_pub: " + http.to_s
-        Rails.logger.info "private_pub: " + http.inspect
-        Rails.logger.info "private_pub: " + http.to_yaml
+        # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        Rails.logger.info "private_pub url: " + url.to_yaml
+        Rails.logger.info "private_pub http: " + http.to_yaml
       # end
       http.start {|h| h.request(form)}
+      Rails.logger.info "private_pub http.start: " + http.to_yaml
     end
 
     # Returns a message hash for sending to Faye
