@@ -45,6 +45,7 @@ module PrivatePub
       Rails.logger.info "private_pub http: " + http.to_yaml
       Rails.logger.info "private_pub cert_path: " + (!config[:cert_path].nil?).to_s
       Rails.logger.info "private_pub key_path: " + (!config[:key_path].nil?).to_s
+      Rails.logger.info "private_pub key_path: " + (http.use_ssl?).to_s
       if http.use_ssl? and !config[:cert_path].nil? and !config[:key_path].nil?
         # cert = File.read("/etc/apache2/ssl/server.crt")
         # key = File.read("/etc/apache2/ssl/server.key")
@@ -53,6 +54,7 @@ module PrivatePub
         http.cert = OpenSSL::X509::Certificate.new(cert)
         http.key = OpenSSL::PKey::RSA.new(key)
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        Rails.logger.info "private_pub inside if"
       end
       http.start {|h| h.request(form)}
       Rails.logger.info "private_pub http.start: " + http.to_yaml
