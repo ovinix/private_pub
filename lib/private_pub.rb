@@ -39,8 +39,11 @@ module PrivatePub
 
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = url.scheme == "https"
-      Rails.logger.info "private_pub: " + http.to_s
-      Rails.logger.info "private_pub: " + http.verify_mode.to_s
+      if http.use_ssl
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        Rails.logger.info "private_pub: " + http.to_s
+        Rails.logger.info "private_pub: " + http.verify_mode.to_s
+      end
       http.start {|h| h.request(form)}
     end
 
